@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+from PIL import ImageOps
 
 # Load the trained model only once
 model = tf.keras.models.load_model("digit_recognition_model.keras")
@@ -10,15 +11,18 @@ def predict_digit(image_path):
     """
     Predicts the handwritten digit from an image.
     """
-
+    
     # Open image
     image = Image.open(image_path)
 
+    
     # Convert to grayscale
     image = image.convert("L")
-
+   
+    image = ImageOps.invert(image)
     # Resize to MNIST size
     image = image.resize((28, 28))
+    image.save("processed_image.png")
 
     # Convert image to NumPy array
     image = np.array(image)
